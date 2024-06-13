@@ -18,14 +18,11 @@ class KNNController extends Controller
 
     public function knn()
     {
-        // Load data from CSV file
-
         $knnfun = new knnfungsi();
         $data = KNN::all()->groupBy('id_item');
         
         $new = [];
         foreach ($data as $dt) {
-            // dd($dt[0]->id_item);
             $item = Item::find($dt[0]->id_item);
             $new[$dt[0]->id_item] = [
                 'id' => $dt[0]->id_item,
@@ -41,16 +38,15 @@ class KNNController extends Controller
                 $new[$dt[0]->id_item]['total'] += $d->total;
             }
         }
-        // dd($new);
 
-        // dd($data[81]);
         $data= $new;
 
         // Preprocess data
         $data = $knnfun->preprocessData($data);
-        // dd($data);
+
         // Split data into training and testing sets
         $XY = $knnfun->splitData($data);
+
         // Train the KNN model
         $knn = $knnfun->trainKNN($XY[0], $XY[2]);
         // dd($data[0]);
@@ -64,6 +60,5 @@ class KNNController extends Controller
         // Recommend stock replenishment
        $datas =  $knnfun->recommendStockReplenishment($data, $y_pred_all);
        return view('item.knnresult', compact(['datas']));
-        // dd($hasil[0]);    
     }
 }

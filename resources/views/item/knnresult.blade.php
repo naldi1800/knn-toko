@@ -48,7 +48,7 @@
                                 <td class="text-end">{{rupiah($d['harga'])}}</td>
                                 <td>{{$d['jumlah']}}</td>
                                 <td class="text-end">{{rupiah($d['total'])}}</td>
-                                <td>{{($rekStock <= 0)? 0 : $rekStock}}</td>
+                                <td>{{($rekStock <= 0)? "Tidak perlu penambahan stok" : $rekStock}}</td>
                                 <td class="text-end">{{rupiah($d['total_masa_depan'])}}</td>
                                 <td>
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal"

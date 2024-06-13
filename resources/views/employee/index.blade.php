@@ -38,7 +38,7 @@
                                 <td class="text-start">{{$d->name}}</td>
                                 <td>{{$d->email}}</td>
                                 <td>{{$d->nohp}}</td>
-                                <td>{{$d->still_working ? "Sedang bekerja" : "Tidak aktif" }}</td>
+                                <td>{{$d->active ? "Sedang bekerja" : "Tidak aktif" }}</td>
                                 <td class="d-flex justify-content-center">
                                     <a class="btn btn-primary " href="{{route('employees.edit', ['id' => $d->id])}}"
                                         role="button">Edit</a>
