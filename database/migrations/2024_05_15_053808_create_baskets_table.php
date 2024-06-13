@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_employees')->constrained()->references('id')->on('employees');
             $table->foreignId('id_item')->constrained()->references('id')->on('items');
-            $table->string("kode_nota");
             $table->integer("jumlah")->default(1);
             $table->integer("harga");
             $table->integer("diskon")->default(0);
-            $table->integer("total");
             $table->timestamps();
         });
     }

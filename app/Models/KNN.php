@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class KNN extends Model
 {
     use HasFactory;
+
+    protected $table = "knn";
+    protected $guarded = [];
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'id_item');
+    }
+
 }

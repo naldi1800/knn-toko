@@ -10,8 +10,8 @@
         <form class="row g-3 needs-validation" action="{{route('employees.save')}}" method="POST" novalidate>
             @csrf
             <div class="col-md-12">
-                <label for="nama" class="form-label">Nama Pegawai<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="nama" name="nama" required>
+                <label for="name" class="form-label">Nama Pegawai<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="name" name="name" required>
                 <div class="invalid-feedback">
                     Masukan nama pegawai!!!
                 </div>

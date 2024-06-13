@@ -1,14 +1,14 @@
 <x-main-layout>
     <x-slot name="header">
         <h2 class="ms-5 p-3">
-            {{ __('Barang') }}
+            {{ __('Result KNN') }}
         </h2>
     </x-slot>
 
     <div class="row">
         <div class="col-4">
-            <a href="{{route('items.create')}}" class="btn btn-success">Tambah barang</a>
-            <a href="{{route('items.knnview')}}" class="btn btn-info">KNN</a>
+            <a href="{{route('items')}}" class="btn btn-secondary">back</a>
+            <!-- <a href="{{route('items.knn')}}" class="btn btn-info">Rekomendasi KNN</a> -->
         </div>
         <div class="col-12">
             &nbsp;
@@ -17,61 +17,57 @@
         <div class="col-12 ">
             <table class=" table-responsive table table-bordered">
                 <thead class="table-dark">
-                    <tr class="text-center">
+                    <tr class="text-center align-middle">
                         <th scope="col">#</th>
                         <th scope="col">Kode</th>
                         <th scope="col">Barang</th>
                         <th scope="col">Merek</th>
+                        <th scope="col">Sisa Stok</th>
                         <th scope="col">Harga</th>
-                        <th scope="col">Diskon</th>
-                        <th scope="col">Stok</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Total Barang Terjual</th>
+                        <th scope="col">Total saat ini (Harga * TBT)</th>
+                        <th scope="col">Saran penambahan stock</th>
+                        <th scope="col">Total pendapatan masa depan</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if(empty($datas->first()))
+                    @if(empty($datas[0]))
                         <tr class="text-center">
-                            <th scope="col" colspan="6">Tidak ada data</th>
+                            <th scope="col" colspan="11">Tidak ada data</th>
                         </tr>
                     @else
                         @foreach ($datas as $d)
+                            <?php        $rekStock = (int) ($d['total_masa_depan'] / $d['harga'] - $d['item']->stok); ?>
                             <tr class="text-center">
                                 <th scope="row">{{$loop->index + 1}}</th>
-                                <td>{{(is_null($d->kode) ? 'Kode tidak tersedia' : $d->kode)}}</td>
-                                <td class="text-start">{{$d->name}}</td>
-                                <td>{{is_null($d->merek)? '-' : $d->merek}}</td>
-                                <td class="text-end">{{rupiah($d->harga)}}</td>
-                                <td>{{$d->diskon}}</td>
-                                <td>{{$d->stok}}</td>
-                                <td class="d-flex justify-content-center">
-                                    <a class="btn btn-primary " href="{{route('items.edit', ['id' => $d->id])}}"
-                                        role="button">Edit</a>
-                                    &nbsp;&nbsp;
-                                    <form action="{{route('items.delete', ['id' => $d->id])}}" class="" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-danger" onclick="event.preventDefault();
-                                                        this.closest('form').submit();">
-                                            {{ __('Hapus') }}
-                                        </button>
-                                        <!-- <button class="btn btn-danger" type="submit">Hapus</button> -->
-                                    </form>&nbsp;&nbsp;
+                                <td>{{(is_null($d['item']->kode) ? '-' : $d['item']->kode)}}</td>
+                                <td class="text-start">{{$d['item']->name}}</td>
+                                <td>{{is_null($d['item']->merek) ? '-' : $d['item']->merek}}</td>
+                                <td>{{$d['item']->stok}}</td>
+                                <td class="text-end">{{rupiah($d['harga'])}}</td>
+                                <td>{{$d['jumlah']}}</td>
+                                <td class="text-end">{{rupiah($d['total'])}}</td>
+                                <td>{{($rekStock <= 0)? 0 : $rekStock}}</td>
+                                <td class="text-end">{{rupiah($d['total_masa_depan'])}}</td>
+                                <td>
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#editStock{{$d->id}}">
+                                        data-bs-target="#editStock{{$d['item']->id}}">
                                         Edit Stock
                                     </button>
-                                    <div class="modal fade" id="editStock{{$d->id}}" data-bs-backdrop="static"
-                                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="editStock{{$d->id}}Label"
-                                        aria-hidden="true">
+                                    <div class="modal fade" id="editStock{{$d['item']->id}}" data-bs-backdrop="static"
+                                        data-bs-keyboard="false" tabindex="-1"
+                                        aria-labelledby="editStock{{$d['item']->id}}Label" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editStock{{$d->id}}Label">Edit stock barang
-                                                        "{{$d->name}}"</h5>
+                                                    <h5 class="modal-title" id="editStock{{$d['item']->id}}Label">Edit stock
+                                                        barang
+                                                        "{{$d['item']->name}}"</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
-                                                <form action="{{route('items.add', ['id' => $d->id])}}" method="post">
+                                                <form action="{{route('items.add', ['id' => $d['item']->id])}}" method="post">
                                                     @csrf
                                                     @method('post')
                                                     <div class="modal-body">
@@ -88,7 +84,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </td>
                             </tr>
                         @endforeach

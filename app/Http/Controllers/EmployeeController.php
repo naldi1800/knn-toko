@@ -19,7 +19,7 @@ class EmployeeController extends Controller
     public function phk()
     {
         $datas = Employee::all()->where('still_working', '0');
-        return view('employee.pegawaidipecat', compact(['datas']));
+        return view('employee.xemployee', compact(['datas']));
     }
 
     public function create()
@@ -49,10 +49,10 @@ class EmployeeController extends Controller
     public function account($id)
     {
         $data = Employee::find($id);
-        $pass = "012345" . strtoupper(explode(' ', $data->nama)[0]);
+        $pass = "012345" . strtoupper(explode(' ', $data->name)[0]);
         // dd($pass);  
         User::create([
-            'name' => $data->nama,
+            'name' => $data->name,
             'email' => $data->email,
             'password' => Hash::make($pass),
             'role' => 'employee',
@@ -62,8 +62,7 @@ class EmployeeController extends Controller
     public function defaultpassword($id)
     {
         $data = Employee::find($id);
-        $pass = "012345" . strtoupper(explode(' ', $data->nama)[0]);
-        // dd($pass);  
+        $pass = "012345" . strtoupper(explode(' ', $data->name)[0]);
         $account = User::firstWhere('email', '=', $data->email);
         $account->Update([
             'password' => Hash::make($pass),

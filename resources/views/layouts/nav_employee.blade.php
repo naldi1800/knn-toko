@@ -20,13 +20,10 @@
                 <x-main.nav-link :href="route('employees')" :active="(request()->routeIs('employees') || in_array('employees', $rute))">
                     {{ __('Pegawai') }}
                 </x-main.nav-link>
-                <!-- <li class="nav-item">
-                
-                </li> -->
             </ul>
             <form method="POST" class="d-flex" action="{{ route('logout') }}">
                 @csrf
-                @method('post')
+                @metode('post')
                 <button class="btn btn-outline-secondary" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                     {{ __('Log Out') }}

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -13,25 +14,26 @@
     <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 </head>
 
-<body class="font-sans antialiased ">
-    @if(Auth::user()->role === 'employee')
-        @include('layouts.nav_employee')
-    @elseif(Auth::user()->role === 'admin')
-        @include('layouts.nav')
-    @endif
-    <!-- <div class="min-h-screen bg-gray-100 dark:bg-gray-900"> -->
-    <div>
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white dark:bg-gray-800 ">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
+<body class="bg-white">
 
-        <!-- Page Content -->
-        <main class="container">
+    <div>
+
+        <!-- @if ($errors->any()) -->
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <!-- <div class="alert alert-danger" role="alert">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div> -->
+        <!-- @endif -->
+
+        <main class="p-2 row">
             {{ $slot }}
         </main>
     </div>

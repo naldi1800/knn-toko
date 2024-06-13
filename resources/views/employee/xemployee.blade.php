@@ -34,7 +34,7 @@
                         @foreach ($datas as $d)
                             <tr class="text-center">
                                 <th scope="row">{{$loop->index + 1}}</th>
-                                <td class="text-start">{{$d->nama}}</td>
+                                <td class="text-start">{{$d->name}}</td>
                                 <td>{{$d->email}}</td>
                                 <td>{{$d->nohp}}</td>
                                 <td>{{$d->still_working ? "Sedang bekerja" : "Tidak aktif" }}</td>
