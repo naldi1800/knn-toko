@@ -10,8 +10,8 @@ class SaleController extends Controller
     private $exept = ['_token'];
     public function index()
     {
-        $datas = Sale::all()->where('still_working', '1');
-        return view('employee.index', compact(['datas']));
+        $datas = Sale::with('item')->with('employee')->get();
+        return view('sale.index', compact(['datas']));
     }
 
 }

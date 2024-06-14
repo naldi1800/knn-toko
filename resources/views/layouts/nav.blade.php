@@ -20,6 +20,9 @@
                 <x-main.nav-link :href="route('employees')" :active="(request()->routeIs('employees') || in_array('employees', $rute))">
                     {{ __('Pegawai') }}
                 </x-main.nav-link>
+                <x-main.nav-link :href="route('sale')" :active="(request()->routeIs('sale') || in_array('sale', $rute))">
+                    {{ __('Penjualan') }}
+                </x-main.nav-link>
                 <!-- <li class="nav-item">
                 
                 </li> -->

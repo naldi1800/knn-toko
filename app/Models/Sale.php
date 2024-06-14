@@ -18,7 +18,7 @@ class Sale extends Model
     }
     public function employee()
     {
-        return $this->belongsTo(Item::class, 'id_employee');
+        return $this->belongsTo(Employee::class, 'id_employees');
     }
 
 }

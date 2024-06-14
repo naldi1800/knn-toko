@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\KNNController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -58,6 +59,8 @@ Route::middleware('adminAuth')->prefix('admin')->group(function () {
         Route::post('/defaultpass/{id}', [EmployeeController::class, 'defaultpassword'])->name('employees.defaultpassword');
         Route::post('/pecat/{id}/{state}', [EmployeeController::class, 'pecat'])->name('employees.pecat');
     });
+
+    Route::get('/sale', [SaleController::class, 'index'])->name('sale');
 });
 
 /**Employee routes **/
