@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div>
-        
+
         <h6><span class="text-danger">*</span> wajib diisi</h6>
         <form class="row g-3 needs-validation" action="{{route('items.save')}}" method="POST" novalidate>
             @csrf

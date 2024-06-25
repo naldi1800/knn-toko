@@ -120,7 +120,6 @@ class knnfungsi
     }
     function recommendStockReplenishment($data, $y_pred_all)
     {
-
         foreach ($data as $key => &$row) {
             $row['total_masa_depan'] = $y_pred_all[$key];
             $row['stok_saat_ini'] = $row['item']->stok;

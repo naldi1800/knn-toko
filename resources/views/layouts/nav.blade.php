@@ -23,6 +23,9 @@
                 <x-main.nav-link :href="route('sale')" :active="(request()->routeIs('sale') || in_array('sale', $rute))">
                     {{ __('Penjualan') }}
                 </x-main.nav-link>
+                <x-main.nav-link :href="route('resetpassadmin')" :active="(request()->routeIs('resetpassadmin') || in_array('resetpassadmin', $rute))">
+                    {{ __('Admin') }}
+                </x-main.nav-link>
                 <!-- <li class="nav-item">
                 
                 </li> -->

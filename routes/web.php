@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeWorkingController;
 use App\Http\Controllers\HomeController;
@@ -34,6 +35,8 @@ use Illuminate\Support\Facades\Route;
 /**Admin routes **/
 Route::middleware('adminAuth')->prefix('admin')->group(function () {
     Route::get('/home', [HomeController::class, 'admin'])->name('home');
+    Route::get('/resetpassadmin', [AdminController::class, 'index'])->name('resetpassadmin');
+    Route::post('/resetpassadmin', [AdminController::class, 'update_pass'])->name('resetpassadmin.reset');
 
     Route::get('/item', [ItemController::class, 'index'])->name('items');
     Route::prefix('item')->group(function () {
