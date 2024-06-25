@@ -38,7 +38,7 @@
                         </tr>
                     @else
                         @foreach ($datas as $d)
-                            <?php        $rekStock = (int) ($d['total_masa_depan'] / $d['harga'] - $d['item']->stok); ?>
+                            <?php        $rekStock = (int) ($d['total_masa_depan'] / $d['harga']); ?>
                             <tr class="text-center">
                                 <th scope="row">{{$loop->index + 1}}</th>
                                 <td>{{(is_null($d['item']->kode) ? '-' : $d['item']->kode)}}</td>
@@ -48,7 +48,7 @@
                                 <td class="text-end">{{rupiah($d['harga'])}}</td>
                                 <td>{{$d['jumlah']}}</td>
                                 <td class="text-end">{{rupiah($d['total'])}}</td>
-                                <td>{{($rekStock <= 0)? "Tidak perlu penambahan stok" : $rekStock}}</td>
+                                <td>{{($rekStock <= 0) ? "Tidak perlu penambahan stok" : $rekStock}}</td>
                                 <td class="text-end">{{rupiah($d['total_masa_depan'])}}</td>
                                 <td>
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
@@ -87,6 +87,9 @@
                                 </td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <th scope="col" colspan="11">Akurasi : {{$per}} </th>
+                        </tr>
                     @endif
                 </tbody>
             </table>

@@ -35,7 +35,7 @@ class knnfungsi
         $X = [];
         $y = [];
         foreach ($data as $row) {
-            $X[] = [$row['jumlah']];
+            $X[] = [$row['jumlah'] * $row['harga']];
             $y[] = [$row['total']];
         }
         $X_train = [];
@@ -55,26 +55,57 @@ class knnfungsi
         return [$X_train, $X_test, $y_train, $y_test];
     }
 
-    function trainKNN($X_train, $y_train)
+    function trainKNN($X_train, $y_train, $k)
     {
         // Train the KNN model with k=5 neighbors
         require 'KNN.php';
-        $knn = new KNN($X_train, $y_train, 5);
+
+        
+        $knn = new KNN($X_train, $y_train, $k);
         return $knn;
     }
-
+  
     function evaluateKNN($knn, $X_test, $y_test)
     {
-        // Evaluate the KNN model using mean squared error (MSE)
+        // Evaluate the KNN model using root mean squared error (RMSE)
         $y_pred = $knn->predict($X_test);
-        $mse = 0;
+        $rmse = 0;
         // dd($y_pred);
         for ($i = 0; $i < count($y_pred); $i++) {
-            // dd(pow($y_test[$i][0] - $y_pred[$i][0], 2));
-            $mse += pow($y_test[$i][0] - $y_pred[$i], 2);
+            $rmse += pow($y_test[$i][0] - $y_pred[$i], 2);
+            // break;
+            // exit;
         }
-        $mse /= count($y_pred);
-        return $mse;
+        $rmse /= count($y_pred);
+        $rmse = sqrt($rmse);
+        // var_dump($y_test);    
+        // exit;
+        return $rmse;
+    }
+
+    function akurasiMAE($y_true, $y_pred)
+    {
+        $mae = 0;
+        for ($i = 0; $i < count($y_true); $i++) {
+            $mae += abs($y_true[$i][0] - $y_pred[$i]);
+        }
+        $mae /= count($y_true);
+        return $mae;
+    }
+
+    function akurasiPersen($y_true, $y_pred)
+    {
+        $mape = 0;
+        for ($i = 0; $i < count($y_true); $i++) {
+            $actual = $y_true[$i][0];
+            $predicted = $y_pred[$i];
+            if ($actual != 0) {
+                $mape += abs(($actual - $predicted) / $actual);
+            }
+        }
+        $mape /= count($y_true);
+        $accuracy = (1 - $mape) * 100; // Convert MAPE to accuracy percentage
+        return number_format($accuracy, 2) . '%';
     }
 
     function predictFutureSales($knn, $data)
@@ -82,7 +113,7 @@ class knnfungsi
         // Predict future sales for all data
         $X_all = [];
         foreach ($data as $row) {
-            $X_all[] = [$row['jumlah']];
+            $X_all[] = [$row['jumlah'] * $row['harga']];
         }
         $y_pred_all = $knn->predict($X_all);
         return $y_pred_all;
@@ -97,9 +128,9 @@ class knnfungsi
         }
         $rekomendasi = [];
         foreach ($data as $row) {
-            if ($row['total_masa_depan'] > ($row['stok_saat_ini'] * $row['item']->harga)) {
+            // if ($row['total_masa_depan'] > ($row['stok_saat_ini'] * $row['item']->harga)) {
                 $rekomendasi[] = $row;
-            }
+            // }
         }
         return $rekomendasi;
     }

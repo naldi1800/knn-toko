@@ -30,11 +30,6 @@ class knn
             for ($i = 0; $i < $this->k; $i++) {
                 $k_nearest_neighbors[] = $this->y_train[$distances[$i][1]];
             }
-            // echo("<br>");
-            // echo("<br>");
-            // echo("<br>");
-            // echo("<br>");
-            // var_dump($k_nearest_neighbors);
             $y_pred[] = $this->calculateAverage($k_nearest_neighbors);
         }
         return $y_pred;

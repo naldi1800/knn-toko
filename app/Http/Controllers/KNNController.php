@@ -20,7 +20,7 @@ class KNNController extends Controller
     {
         $knnfun = new knnfungsi();
         $data = KNN::all()->groupBy('id_item');
-        
+
         $new = [];
         foreach ($data as $dt) {
             $item = Item::find($dt[0]->id_item);
@@ -38,27 +38,32 @@ class KNNController extends Controller
                 $new[$dt[0]->id_item]['total'] += $d->total;
             }
         }
+        // dd($new);
 
-        $data= $new;
+        $data = $new;
 
         // Preprocess data
         $data = $knnfun->preprocessData($data);
-
         // Split data into training and testing sets
-        $XY = $knnfun->splitData($data);
+        // $XY = $knnfun->splitData($data);
+        list($X_train, $X_test, $y_train, $y_test) = $knnfun->splitData($data);
 
+        $k = 5;
         // Train the KNN model
-        $knn = $knnfun->trainKNN($XY[0], $XY[2]);
+        $knn = $knnfun->trainKNN($X_train, $y_train, $k);
         // dd($data[0]);
 
         // Evaluate the KNN model
-        $mse = $knnfun->evaluateKNN($knn, $XY[1], $XY[3]);
-        
+        $mse = $knnfun->evaluateKNN($knn, $X_test, $y_test);
+        $y_pred = $knn->predict($X_test);
+        $mae = $knnfun->akurasiMAE($y_test, $y_pred);
+        $per = $knnfun->akurasiPersen($y_test, $y_pred);
+        // dd($per);
         // Predict future sales for all data
         $y_pred_all = $knnfun->predictFutureSales($knn, $data);
-
+        // dd($y_pred_all);
         // Recommend stock replenishment
-       $datas =  $knnfun->recommendStockReplenishment($data, $y_pred_all);
-       return view('item.knnresult', compact(['datas']));
+        $datas = $knnfun->recommendStockReplenishment($data, $y_pred_all);
+        return view('item.knnresult', compact(['datas', 'mse', 'mae', 'per']));
     }
 }
